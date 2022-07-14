@@ -1,7 +1,5 @@
 import sys
-from lxml.html import fromstring
 import nltk
-from regex import D
 nltk.download('punkt')
 from twitter import OAuth, Twitter
 
@@ -96,7 +94,9 @@ def handle_card_data(cards):
         else:
             remote = "Not eligible for remote working"
 
-        yield create_text_paragraph(title, url, city, country, remote)
+        tweet = create_text_paragraph(title, url, city, country, remote)
+        t.statuses.update(status=tweet)
+        print(tweet, end='\n')
 
 #Functions that uses all the data collected for the job posting and creates the final message.
 def create_text_paragraph(job_title, url, city, country, remote):
@@ -114,6 +114,7 @@ def create_text_paragraph(job_title, url, city, country, remote):
     msg = f"New position for:{nl}{job_title}{nl_x2}Main office: {city}, {country}{nl_x2}{remote}{nl_x2}Read more: {short_url}"
 
     return msg
+
 
 x = get_job_cards()
 handle_card_data(x)
