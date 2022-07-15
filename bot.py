@@ -19,6 +19,8 @@ oauth = OAuth(
     )
 t = Twitter(auth=oauth)
 
+
+#Collect data from cards sidte and determine how many tweets to post.
 def get_job_cards():
     session = HTMLSession()
     url = 'https://careers.google.com/jobs/results/?location=Switzerland&q=software%20engineer&sort_by=date'
