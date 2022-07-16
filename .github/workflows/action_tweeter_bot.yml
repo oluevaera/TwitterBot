@@ -14,18 +14,23 @@ jobs:
         with:
           python-version: '3.8.9'
           cache: 'pip'
-      - run: pip install -r requirements.txt
+          
+      - name: Install requirements
+        run: pip install -r requirements.txt
 
       - name: Run Bot
-        uses: oluevaera/TweeterBot 
+        uses: oluevaera/TweeterBot@v1
         env:
           CONSUMER_KEY: ${{ secrets.CONSUMER_KEY }}
           CONSUMER_SECRET: ${{ secrets.CONSUMER_SECRET }}
           ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
           ACCESS_TOKEN_SECRET: ${{ secrets.ACCESS_TOKEN_SECRET }}
+      
+      - name: Run the script
         run: python3 bot.py
 
-      - run: |
+      - name: save the new dates
+        run: |
           git config user.name github-actions
           git config user.email github-actions@github.com
           git add dates.txt 
