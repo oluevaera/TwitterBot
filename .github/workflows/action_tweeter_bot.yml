@@ -19,7 +19,6 @@ jobs:
         run: pip install -r requirements.txt
 
       - name: Run Bot
-        uses: oluevaera/TweeterBot@v1
         env:
           CONSUMER_KEY: ${{ secrets.CONSUMER_KEY }}
           CONSUMER_SECRET: ${{ secrets.CONSUMER_SECRET }}
