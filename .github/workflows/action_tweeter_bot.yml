@@ -1,0 +1,33 @@
+name: Tweeter_posting_workflow 
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '* */3 * * *' # Runs Bot every 3 hours.
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.8.9'
+          cache: 'pip'
+      - run: pip install -r requirements.txt
+
+      - name: Run Bot
+        uses: oluevaera/TweeterBot 
+        env:
+          CONSUMER_KEY: ${{ secrets.CONSUMER_KEY }}
+          CONSUMER_SECRET: ${{ secrets.CONSUMER_SECRET }}
+          ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+          ACCESS_TOKEN_SECRET: ${{ secrets.ACCESS_TOKEN_SECRET }}
+        run: python3 bot.py
+
+      - run: |
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git add dates.txt 
+          git commit -m "Automatic dates"
+          git push
