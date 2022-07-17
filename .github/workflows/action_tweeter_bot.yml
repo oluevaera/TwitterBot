@@ -26,16 +26,15 @@ jobs:
           ACCESS_SECRET: ${{ secrets.ACCESS_SECRET }}  
         run: python3 bot.py
 
-      - name: Check for dates change
-        id: git_diff
-        run: |
-          $diff=git diff --name-only HEAD^ HEAD
-          $SourceDiff=$diff | Where-Object { $_ -match '.txt$' }
-          $HasDiff=$SourceDiff.Length -gt 0
-          Write-Host "::set-output name=dates_changed::$HasDiff"
+      - name: Verify change on dates
+        uses: tj-actions/verify-changed-files@v10
+        id: changed_dates
+        with:
+          files: |
+            dates.txt
           
       - name: save the new dates
-        if: steps.git_diff.outputs.diff.dates_changed == 'True'
+        if: steps.changed_dates.outputs.files_changed == 'True'
         run: |
           git config user.name github-actions
           git config user.email github-actions@github.com
