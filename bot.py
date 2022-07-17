@@ -1,7 +1,7 @@
 import sys
 import os
 
-from twitter import *
+from twitter import OAuth, Twitter
 from requests_html import HTMLSession
 import datetime
 import pyshorteners
