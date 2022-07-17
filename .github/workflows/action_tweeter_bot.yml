@@ -33,7 +33,7 @@ jobs:
           files: |
             dates.txt
           
-      - name: save the new dates
+      - name: Save the new dates
         if: steps.changed_dates.outputs.files_changed == 'True'
         run: |
           git config user.name github-actions
