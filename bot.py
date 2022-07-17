@@ -121,6 +121,7 @@ def clean_tweet_dates_txt():
             f.seek(0)
             f.writelines(data[10:])
 
+
 # Control the script and exit if there are no new job postings.
 def main():
     clean_tweet_dates_txt()
