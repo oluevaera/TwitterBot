@@ -26,18 +26,17 @@ jobs:
           ACCESS_SECRET: ${{ secrets.ACCESS_SECRET }}  
         run: python3 bot.py
 
-      - name: check for new dates
-        id: verify_diff
+      - name: Check for dates change
+        id: git_diff
         run: |
-          git diff --quiet dates.txt || echo "::set-output name=new_dates_exist::true"
-          
-      - uses: technote-space/get-diff-action@v6
-        id: git-diff
-        with:
-          FILES: dates.txt
+          $diff = git diff --name-only HEAD^ HEAD
+          $SourceDiff = $diff | Where-Object { $_ -match '.txt$' }
+          $HasDiff = $SourceDiff.Length -gt 0
+          Write-Host "::set-output name=dates_changed::$HasDiff"
+
           
       - name: save the new dates
-        if: steps.git-diff.outputs.diff
+        if: steps.git_diff.outputs.diff.dates_changed == 'True'
         run: |
           git config user.name github-actions
           git config user.email github-actions@github.com
