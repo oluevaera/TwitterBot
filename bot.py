@@ -44,7 +44,7 @@ def get_job_cards():
     for value in range(20):
         dates.insert(0, str(card_dates[value].attrs["content"]))
 
-    # Figure how many posts to creat based on the last posted tweet date.
+    # Figure how many posts to create based on the last posted tweet date.
     latest_tweet_date = latest_tweet_dates_txt()
     tweet_t = datetime.datetime.strptime(latest_tweet_date[:-5], "%Y-%m-%dT%H:%M:%S")    
     for count in range (20):
@@ -62,7 +62,7 @@ def handle_card_data(card):
     page = session.get(url)
     page.html.render(sleep=1, keep_page=True, scrolldown=1)
     
-    #Collect the data of the job posting.
+    #Collect the data from job posting.
     title = card.attrs['aria-label']
     rendered_page_loc = page.html.xpath('//div[@class="wrapper__maincol"]//div[@itemprop="address"]/span')
     city = rendered_page_loc[0].text
@@ -70,7 +70,7 @@ def handle_card_data(card):
     #Could be used in the future. Positions total count.
     #job_matches = page.html.xpath('//div[@data-gtm-ref="jobs-matched"]/span/*')
 
-    #Validate if position is available for remote working.
+    #Check if position is available for remote working.
     remote_data = page.html.xpath('//li[@itemprop="jobLocationType"]')
     if remote_data:
         remote = remote_data[0].text
@@ -80,13 +80,13 @@ def handle_card_data(card):
     t.statuses.update(status=tweet)
 
 
-# Functions that uses all the data collected for the job posting and creates the final message.
+# Function that uses all the data collected from the job posting and returns the final message.
 def create_text_paragraph(job_title, url, city, country, remote):
     # fStrings don't support '\' character.
     nl = '\n'
     nl_x2 = '\n'*2
 
-    # Shorter URL since tweeter has a character limit(280).
+    # Shorter URL since twitter has a character limit(280).
     type_tiny = pyshorteners.Shortener()
     short_url = type_tiny.tinyurl.short(url)
 
