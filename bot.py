@@ -64,11 +64,15 @@ def handle_card_data(card):
     
     #Collect the data from job posting.
     title = card.attrs['aria-label']
-    rendered_page_loc = page.html.xpath('//div[@class="wrapper__maincol"]//div[@itemprop="address"]/span')
-    city = rendered_page_loc[0].text
-    country = rendered_page_loc[1].text
-    #Could be used in the future. Positions total count.
-    #job_matches = page.html.xpath('//div[@data-gtm-ref="jobs-matched"]/span/*')
+    try:
+        rendered_page_loc = page.html.xpath('//div[@class="wrapper__maincol"]//div[@itemprop="address"]/span')
+        city = rendered_page_loc[0].text
+        country = rendered_page_loc[1].text
+        #Could be used in the future. Positions total count.
+        #job_matches = page.html.xpath('//div[@data-gtm-ref="jobs-matched"]/span/*')
+    except Exception: 
+        city = ""
+        country = ""
 
     #Check if position is available for remote working.
     remote_data = page.html.xpath('//li[@itemprop="jobLocationType"]')
