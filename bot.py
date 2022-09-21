@@ -71,8 +71,8 @@ def handle_card_data(card):
         #Could be used in the future. Positions total count.
         #job_matches = page.html.xpath('//div[@data-gtm-ref="jobs-matched"]/span/*')
     except Exception: 
-        city = ""
-        country = ""
+        city = "Not specified"
+        country = " -"
 
     #Check if position is available for remote working.
     remote_data = page.html.xpath('//li[@itemprop="jobLocationType"]')
