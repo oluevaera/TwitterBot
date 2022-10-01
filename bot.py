@@ -41,7 +41,7 @@ def get_job_cards():
     dates = []
     # Posting dates are sorted by date, so:
     # 'insert' instead of 'append' to store them from oldest[0] -> newest[19].
-    for value in range(20):
+    for value in card_dates:
         dates.insert(0, str(card_dates[value].attrs["content"]))
 
     # Figure how many posts to create based on the last posted tweet date.
