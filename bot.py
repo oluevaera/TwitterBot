@@ -2,13 +2,16 @@ import sys
 import os
 
 from twitter import OAuth, Twitter
+import tweepy
 from requests_html import HTMLSession
 import datetime
 import pyshorteners
 
 #import credentials
 
-#Setup for running over 'Github actions' or local Terminal with credentials. 
+
+#Setup for running over 'Github actions' or local Terminal with credentials.
+
 #Local tessting:
 #oauth = OAuth(
 #        credentials.ACCESS_TOKEN,
@@ -28,38 +31,48 @@ oauth = OAuth(
 t = Twitter(auth=oauth)
 
 
+def get_latest_tweet_date():
+    auth = tweepy.OAuthHandler(os.environ['CONSUMER_KEY'], os.environ['CONSUMER_SECRET'])
+    auth.set_access_token(os.environ['ACCESS_TOKEN'], os.environ['ACCESS_SECRET'])
+    api = tweepy.API(auth)
+    tweets_list= api.user_timeline(count=1) # Get the last tweet.
+    tweet = tweets_list[0] # An object of class Status (tweepy.models.Status).
+    return tweet.created_at.replace(tzinfo=None) # Remove the timezone from the timestamp.
+
+
+def load_page(url):
+    session = HTMLSession()
+    return  session.get(url)
+
+
 # Get list of job cards and determine how many tweets to post.
 def get_job_cards():
-    session = HTMLSession()
     url = 'https://careers.google.com/jobs/results/?location=Switzerland&q=software%20engineer&sort_by=date'
-    r = session.get(url)
-    r.html.render(sleep=1, keep_page=True, scrolldown=1)
-
+    page = load_page(url)
+    page.html.render(sleep=1, keep_page=True, scrolldown=1)
+    
     # get the dates of all 20 Job postings.
-    cards = r.html.xpath('//a[@class="gc-card"]')
-    card_dates = r.html.xpath('//div[@class="gc-card__header"]/meta[2]')
+    cards = page.html.xpath('//a[@class="gc-card"]')
+    card_dates = page.html.xpath('//div[@class="gc-card__header"]/meta[2]')
     dates = []
+    
     # Posting dates are sorted by date, so:
     # 'insert' instead of 'append' to store them from oldest[0] -> newest[19].
     for value in range(len(card_dates)):
         dates.insert(0, str(card_dates[value].attrs["content"]))
 
     # Figure how many posts to create based on the last posted tweet date.
-    latest_tweet_date = latest_tweet_dates_txt()
-    tweet_t = datetime.datetime.strptime(latest_tweet_date[:-5], "%Y-%m-%dT%H:%M:%S")    
+    tweet_t = get_latest_tweet_date()    
     for count in range (20):
         web_t = datetime.datetime.strptime(dates[count][:-5], "%Y-%m-%dT%H:%M:%S")
         if web_t > tweet_t:
-            write_tweet_dates_txt(dates[-1])
             return cards[:20-count]
 
 
 # Collect the data from each Job card.
 def handle_card_data(card):
-    # Setup url/card and render JS.
     url = "https://careers.google.com" + card.attrs['href']
-    session = HTMLSession()
-    page = session.get(url)
+    page = load_page(url)
     page.html.render(sleep=1, keep_page=True, scrolldown=1)
     
     #Collect the data from job posting.
@@ -102,34 +115,8 @@ def create_text_paragraph(job_title, url, city, country, remote):
     return msg
 
 
-# Get the lastest tweet date.
-def latest_tweet_dates_txt():
-    with open('dates.txt') as f:
-        latest = f.readlines()[-1]
-        return latest
-
-
-# Write the date of the latest collected card to dates.txt.
-def write_tweet_dates_txt(new_tweet_date):
-    with open('dates.txt', 'a') as f:
-        f.write('\n')
-        f.write(new_tweet_date)
-
-
-# Keep 'dates.txt' short.
-def clean_tweet_dates_txt():
-    with open('dates.txt', 'r+') as f:
-        data = f.read().splitlines(True)
-        if len(data) > 15:
-            f.truncate(0)
-            f.seek(0)
-            f.writelines(data[10:])
-
-
 # Control the script and exit if there are no new job postings.
 def main():
-    clean_tweet_dates_txt()
-
     cards = get_job_cards()
     if cards is None:
         sys.exit()
