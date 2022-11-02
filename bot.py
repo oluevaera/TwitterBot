@@ -6,13 +6,10 @@ import tweepy
 from requests_html import HTMLSession
 import datetime
 import pyshorteners
-
 #import credentials
 
 
-#Setup for running over 'Github actions' or local Terminal with credentials.
-
-#Local tessting:
+#Local testing:
 #oauth = OAuth(
 #        credentials.ACCESS_TOKEN,
 #        credentials.ACCESS_SECRET,
@@ -20,6 +17,7 @@ import pyshorteners
 #        credentials.CONSUMER_SECRET
 #    )
 #t = Twitter(auth=oauth)
+
 
 #Github Actions run:
 oauth = OAuth(
@@ -51,7 +49,7 @@ def get_job_cards():
     page = load_page(url)
     page.html.render(sleep=1, keep_page=True, scrolldown=1)
     
-    # get the dates of all 20 Job postings.
+    # Get the dates of all 20 Job postings.
     cards = page.html.xpath('//a[@class="gc-card"]')
     card_dates = page.html.xpath('//div[@class="gc-card__header"]/meta[2]')
     dates = []
@@ -75,7 +73,7 @@ def handle_card_data(card):
     page = load_page(url)
     page.html.render(sleep=1, keep_page=True, scrolldown=1)
     
-    #Collect the data from job posting.
+    # Collect the data from job posting.
     title = card.attrs['aria-label']
     try:
         rendered_page_loc = page.html.xpath('//div[@class="wrapper__maincol"]//div[@itemprop="address"]/span')
@@ -87,7 +85,7 @@ def handle_card_data(card):
         city = "Not specified"
         country = " -"
 
-    #Check if position is available for remote working.
+    # Check if position is available for remote working.
     remote_data = page.html.xpath('//li[@itemprop="jobLocationType"]')
     if remote_data:
         remote = remote_data[0].text
