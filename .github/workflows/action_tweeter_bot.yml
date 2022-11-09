@@ -25,19 +25,3 @@ jobs:
           ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
           ACCESS_SECRET: ${{ secrets.ACCESS_SECRET }}  
         run: python3 bot.py
-
-      - name: Verify change on dates
-        uses: tj-actions/verify-changed-files@v10
-        id: changed_dates
-        with:
-          files: |
-            dates.txt
-          
-      - name: Save the new dates
-        if: steps.changed_dates.outputs.files_changed == 'True'
-        run: |
-          git config user.name github-actions
-          git config user.email github-actions@github.com
-          git add dates.txt 
-          git commit -m "Automatic dates"
-          git push
