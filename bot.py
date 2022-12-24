@@ -60,11 +60,12 @@ def get_job_cards():
         dates.insert(0, str(card_dates[value].attrs["content"]))
 
     # Figure how many posts to create based on the last posted tweet date.
-    tweet_t = get_latest_tweet_date()    
-    for count in range (20):
+    tweet_t = get_latest_tweet_date()
+    cards_length = len(cards)  
+    for count in range (cards_length):
         web_t = datetime.datetime.strptime(dates[count][:-5], "%Y-%m-%dT%H:%M:%S")
         if web_t > tweet_t:
-            return cards[:20-count]
+            return cards[:cards_length-count]
 
 
 # Collect the data from each Job card.
