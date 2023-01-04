@@ -4,7 +4,7 @@ from datetime import date
 import pyshorteners
 
 auth = tweepy.OAuthHandler(os.environ['CONSUMER_KEY'], os.environ['CONSUMER_SECRET'])
-auth.set_access_token(os.environ['.ACCESS_TOKEN'], os.environ['ACCESS_SECRET'])
+auth.set_access_token(os.environ['ACCESS_TOKEN'], os.environ['ACCESS_SECRET'])
 api = tweepy.API(auth) 
 
 def get_company_hashtag_details(company):
