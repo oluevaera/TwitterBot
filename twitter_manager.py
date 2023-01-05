@@ -53,17 +53,18 @@ def tweet_text(job_title, url, city, country, remote, company, hashtag=''):
     type_tiny = pyshorteners.Shortener()
     short_url = type_tiny.tinyurl.short(url)
 
-    msg = f"""
-    New position for:
-    {job_title}
-    
-    Main office: {city}, {country}
-    
-    {remote}
-    
-    Read more: {short_url}
-    #{company} {hashtag}
-    """
+    msg = (
+    f'New position for:\n'
+    f'{job_title}\n'
+    f'\n'
+    f'Main office: {city}, {country}\n'
+    f'\n'
+    f'{remote}\n'
+    f'\n'
+    f'Read more: {short_url}\n'
+    f'#{company} {hashtag}'
+    )
+
     return msg
 
     
