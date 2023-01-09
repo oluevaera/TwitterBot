@@ -24,8 +24,7 @@ def get_nvidia_job_cards():
     latest_nvidia_tweet = tm.get_company_hashtag_details('Nvidia')
     latest_tweet_date = datetime.strptime(latest_nvidia_tweet[0][0], "%Y-%m-%d")
     current_date = datetime.strptime(str(date.today()), "%Y-%m-%d")
-    #time_diff = str(current_date - latest_tweet_date)
-    time_diff = str(31)
+    time_diff = str(current_date - latest_tweet_date)
 
     # Get the dates of all first page postings.
     card_titles = page.html.xpath('//a[@class="css-19uc56f"]') 
