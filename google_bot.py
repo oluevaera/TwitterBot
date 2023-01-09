@@ -2,6 +2,7 @@ import sys
 from requests_html import HTMLSession
 import datetime
 import twitter_manager as tm
+import pyshorteners
 
 
 # Get list of job cards and determine how many tweets to post.
@@ -60,8 +61,12 @@ def handle_card_data(card):
         remote = remote_data[0].text
     else:
         remote = "Not eligible for remote working"
-    tweet = tm.tweet_text(title, url, city, country, remote, 'Google')
+        
+    type_tiny = pyshorteners.Shortener()
+    tiny_url = type_tiny.tinyurl.short(url)
+    tweet = tm.tweet_text(title, tiny_url, city, country, remote, 'Google')
     tm.create_tweet(tweet)
+
 
 # Control the script and exit if there are no new job postings.
 def main():
