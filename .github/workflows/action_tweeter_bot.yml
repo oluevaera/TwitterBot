@@ -18,10 +18,18 @@ jobs:
       - name: Install requirements
         run: pip3 install -r requirements.txt
 
-      - name: Run Bot
+      - name: Run Google Bot
         env:
           CONSUMER_KEY: ${{ secrets.CONSUMER_KEY }}
           CONSUMER_SECRET: ${{ secrets.CONSUMER_SECRET }}
           ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
           ACCESS_SECRET: ${{ secrets.ACCESS_SECRET }}  
         run: python3 google_bot.py
+        
+      - name: Run Nvidia Bot
+        env:
+          CONSUMER_KEY: ${{ secrets.CONSUMER_KEY }}
+          CONSUMER_SECRET: ${{ secrets.CONSUMER_SECRET }}
+          ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+          ACCESS_SECRET: ${{ secrets.ACCESS_SECRET }}
+        run: python3 nvidia_bot.py
