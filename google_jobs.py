@@ -1,14 +1,16 @@
 import sys
 from requests_html import HTMLSession
-import datetime
-import twitter_manager as tm
+from datetime import datetime
+import twitter_helper as th
 import pyshorteners
 
 
 # Get list of job cards and determine how many tweets to post.
 def get_google_job_cards():
     session = HTMLSession()
-    url = 'https://careers.google.com/jobs/results/?location=Switzerland&q=software%20engineer&sort_by=date'
+    url = ('https://careers.google.com/jobs/results/?location=Switzerland'
+           '&q=software%20engineer&sort_by=date'
+           )
     page = session.get(url)
     page.html.render(sleep=1, keep_page=True, scrolldown=1)
     
@@ -23,13 +25,13 @@ def get_google_job_cards():
         dates.insert(0, str(card_dates[value].attrs["content"]))
 
     # Figure how many posts to create based on the last posted tweet date.
-    latest_google_tweet = tm.tweet_details_collector('Google')
-    tweet_t_pre_edit = 'T'.join(latest_google_tweet['Google'])
-    tweet_t = datetime.datetime.strptime(tweet_t_pre_edit, "%Y-%m-%dT%H:%M:%S") 
+    latest_google_tweet = th.get_company_hashtag_details('Google')
+    tweet_t_pre_edit = 'T'.join(latest_google_tweet)
+    tweet_t = datetime.strptime(tweet_t_pre_edit, "%Y-%m-%dT%H:%M:%S") 
 
     cards_length = len(cards)  
     for count in range (cards_length):
-        web_t = datetime.datetime.strptime(dates[count][:-5], "%Y-%m-%dT%H:%M:%S")
+        web_t = datetime.strptime(dates[count][:-5], "%Y-%m-%dT%H:%M:%S")
         if web_t > tweet_t:
             return cards[:cards_length-count]
 
@@ -49,8 +51,7 @@ def handle_card_data(card):
             )
         city = rendered_page_loc[0].text
         country = rendered_page_loc[1].text
-        #Could be used in the future. Positions total count.
-        #job_matches = page.html.xpath('//div[@data-gtm-ref="jobs-matched"]/span/*')
+
     except Exception: 
         city = "Not specified"
         country = " -"
@@ -64,8 +65,8 @@ def handle_card_data(card):
         
     type_tiny = pyshorteners.Shortener()
     tiny_url = type_tiny.tinyurl.short(url)
-    tweet = tm.tweet_text(title, tiny_url, city, country, remote, 'Google')
-    tm.create_tweet(tweet)
+    tweet = th.tweet_text(title, tiny_url, city, country, remote, 'Google')
+    th.create_tweet(tweet)
 
 
 # Control the script and exit if there are no new job postings.
@@ -79,4 +80,4 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    get_google_job_cards()
