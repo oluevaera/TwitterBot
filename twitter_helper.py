@@ -1,5 +1,5 @@
 import tweepy
-
+import os
 
 # Authenticate tweepy to post and retrieve data.
 # Currently using API v1.1
