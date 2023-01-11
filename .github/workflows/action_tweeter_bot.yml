@@ -24,7 +24,7 @@ jobs:
           CONSUMER_SECRET: ${{ secrets.CONSUMER_SECRET }}
           ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
           ACCESS_SECRET: ${{ secrets.ACCESS_SECRET }}  
-        run: python3 google_bot.py
+        run: python3 google_jobs.py
         
       - name: Run Nvidia Bot
         env:
@@ -32,4 +32,4 @@ jobs:
           CONSUMER_SECRET: ${{ secrets.CONSUMER_SECRET }}
           ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
           ACCESS_SECRET: ${{ secrets.ACCESS_SECRET }}
-        run: python3 nvidia_bot.py
+        run: python3 nvidia_jobs.py
