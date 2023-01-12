@@ -1,6 +1,6 @@
 import re
 from requests_html import HTMLSession
-from datetime import date, datetime
+from datetime import date, datetime, timedelta
 import pyshorteners
 import twitter_helper as th
 
@@ -18,9 +18,12 @@ def get_nvidia_job_details():
     page.html.render(sleep=5, keep_page=True, scrolldown=1)
     
     # The script runs multiple times each day.
-    # Collect all the nvidia job IDs for jobs that are already tweeted today.
+    # Collect all the nvidia job IDs for jobs that are already tweeted today or
+    # yesterday.
+    date_today = date.today()
+    date_yesterday = date_today - timedelta(days=1)
     todays_tags = [el[2] for el in th.get_company_hashtag_details('Nvidia') if
-                   el[0] == str(date.today())
+                   el[0] == str(date_today) or el[0] == str(date_yesterday)
                    ]
 
     # Find how long has it been between the latest nvidia job tweet and today.
