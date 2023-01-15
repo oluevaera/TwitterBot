@@ -30,7 +30,7 @@ def get_nvidia_job_details():
     latest_nvidia_tweet = th.get_company_hashtag_details('Nvidia')
     latest_tweet_date = datetime.strptime(latest_nvidia_tweet[0][0], "%Y-%m-%d")
     current_date = datetime.strptime(str(date.today()), "%Y-%m-%d")
-    time_diff = str(current_date - latest_tweet_date)
+    time_diff = (current_date - latest_tweet_date).days
     
     # Get the data of all the jobs (up to 20) from the careers website. 
     card_titles = page.html.xpath('//a[@class="css-19uc56f"]') 
@@ -51,7 +51,8 @@ def get_nvidia_job_details():
     # Filter the open positions based on the post date.
     open_positions = [position for position in open_positions if
                       position[-1] == "Today" or
-                      position[-1] <= time_diff
+                      position[-1] == "Yesterday" or
+                      int(position[-1]) <= time_diff
                       ]
 
     # Filter the open positions based on the tag.
