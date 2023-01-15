@@ -80,4 +80,4 @@ def main():
 
 
 if __name__ == "__main__":
-    get_google_job_cards()
+    main()
