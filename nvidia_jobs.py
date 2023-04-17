@@ -36,15 +36,6 @@ def get_nvidia_job_details():
     return open_positions
 
 
-# Find how long has it been between the latest nvidia job tweet and today.
-def get_time_without_a_tweet():
-    latest_nvidia_tweet = th.get_company_hashtag_details('Nvidia')
-    latest_tweet_date = datetime.strptime(latest_nvidia_tweet[0][0], "%Y-%m-%d")
-    current_date = datetime.strptime(str(date.today()), "%Y-%m-%d")
-    time_diff = (current_date - latest_tweet_date).days 
-    return time_diff
-
-
 # The script runs multiple times each day. Collect all the nvidia job IDs for
 # jobs that are already tweeted today or yesterday.
 def collect_tweet_tags():
@@ -57,12 +48,9 @@ def collect_tweet_tags():
 
 
 # Filter the open positions based on the post date.
-def filtered_positions(open_positions, time_diff, todays_tags):
+def filtered_positions(open_positions, todays_tags):
     filter_by_time = [position for position in open_positions if
-                      position[-1] == "Today" or
-                      position[-1] == "Yesterday" or
-                      int(position[-1]) <= time_diff
-                      ]
+                      position[-1] == "Today"]
     
     # Filter the open positions based on the tag.
     filter_by_tag = [position for position in filter_by_time if
@@ -74,10 +62,9 @@ def filtered_positions(open_positions, time_diff, todays_tags):
     
 def main():
     open_positions = get_nvidia_job_details()
-    time_diff = get_time_without_a_tweet()
     todays_tags = collect_tweet_tags()
 
-    to_post = filtered_positions(open_positions, time_diff, todays_tags)
+    to_post = filtered_positions(open_positions, todays_tags)
 
     city = 'Zürich'
     country = 'Switzerland'
