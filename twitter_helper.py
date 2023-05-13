@@ -15,7 +15,7 @@ def get_company_hashtag_details(company):
     # Iterate over the latest 100 tweets of the user.
     for tweet in tweepy.Cursor(
         api.user_timeline,
-        screen_name='@GoogleJobAds',
+        screen_name='@SWEJobAds',
         tweet_mode='extended'
         ).items(100):
         
