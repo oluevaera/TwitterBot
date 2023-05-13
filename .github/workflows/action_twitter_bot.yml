@@ -1,4 +1,4 @@
-name: Tweeter_posting_workflow 
+name: Twitter_posting_workflow 
 
 on:
   workflow_dispatch:
