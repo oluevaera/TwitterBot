@@ -4,9 +4,8 @@
 <p align="center">
   Automatic tweets for new FAANG engineering positions in Zürich.
 </p>
-![Twitter](https://img.shields.io/badge/Twitter-%231DA1F2.svg?style=for-the-badge&logo=Twitter&logoColor=white)
 <div align="center">
-  <img src="https://raw.githubusercontent.com/oluevaera/TwitterBot/main/images/twitter_bot.png?token=GHSAT0AAAAAACBHMLO5KOMJZI4GVMKDMMV4ZDHZJ7A" alt="Image" />
+  <img src="images/twitter_bot.png" alt="Image" />
 </div>
 
 ## Description
