@@ -1,11 +1,10 @@
 import tweepy
 import os
-import credentials
 
 # Authenticate tweepy to post and retrieve data.
 # Currently using API v1.1
-auth = tweepy.OAuthHandler(credentials.CONSUMER_KEY, credentials.CONSUMER_SECRET)
-auth.set_access_token(credentials.ACCESS_TOKEN, credentials.ACCESS_SECRET)
+auth = tweepy.OAuthHandler(os.environ['CONSUMER_KEY'], os.environ['CONSUMER_SECRET'])
+auth.set_access_token(os.environ['ACCESS_TOKEN'], os.environ['ACCESS_SECRET'])
 api = tweepy.API(auth) 
 
 
@@ -14,10 +13,9 @@ def get_company_hashtag_details(company):
     dates_and_tags = list()
 
     # Iterate over the latest 100 tweets of the user.
-    print('IM HERE')
     for tweet in tweepy.Cursor(
         api.user_timeline,
-        screen_name='@SWEJobAds',
+        screen_name='@GoogleJobAds',
         tweet_mode='extended'
         ).items(100):
         
