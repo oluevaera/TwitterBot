@@ -14,7 +14,7 @@ jobs:
         with:
           python-version: '3.10.8'
           cache: 'pip'
-          
+
       - name: Install requirements
         run: pip3 install -r requirements.txt
 
@@ -25,7 +25,7 @@ jobs:
           ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
           ACCESS_SECRET: ${{ secrets.ACCESS_SECRET }}  
         run: python3 src/google_jobs.py
-        
+
       - name: Run Nvidia Bot
         env:
           CONSUMER_KEY: ${{ secrets.CONSUMER_KEY }}
@@ -33,3 +33,19 @@ jobs:
           ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
           ACCESS_SECRET: ${{ secrets.ACCESS_SECRET }}
         run: python3 src/nvidia_jobs.py
+
+      - name: Verify change on dates
+        uses: tj-actions/verify-changed-files@v10
+        id: changed_dates
+        with:
+          files: |
+            src/data.json
+
+      - name: Save the new dates
+        if: steps.changed_dates.outputs.files_changed == 'True'
+        run: |
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git add src/data.json
+          git commit -m "Automatic dates"
+          git push

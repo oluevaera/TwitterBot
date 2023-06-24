@@ -24,15 +24,16 @@ def get_google_job_cards():
     for value in range(len(card_dates)):
         dates.insert(0, str(card_dates[value].attrs["content"]))
 
+
     # Figure how many posts to create based on the last posted tweet date.
-    latest_google_tweet = th.get_company_hashtag_details('Google')
-    tweet_t_pre_edit = 'T'.join(latest_google_tweet)
-    tweet_t = datetime.strptime(tweet_t_pre_edit, "%Y-%m-%dT%H:%M:%S") 
+    tweet_t_pre_edit = th.read_latest_tweet_date('Google')
+    tweet_t = datetime.strptime(tweet_t_pre_edit[:-5], "%Y-%m-%dT%H:%M:%S")
 
     cards_length = len(cards)  
-    for count in range (cards_length):
+    for count in range(cards_length):
         web_t = datetime.strptime(dates[count][:-5], "%Y-%m-%dT%H:%M:%S")
         if web_t > tweet_t:
+            th.write_latest_tweet_date('Google', dates[-1])
             return cards[:cards_length-count]
 
 
@@ -49,7 +50,7 @@ def handle_card_data(card):
         rendered_page_loc = page.html.xpath(
             '//div[@class="wrapper__maincol"]//div[@itemprop="address"]/span'
             )
-        city = rendered_page_loc[0].text
+        city = rendered_page_loc[0].text[:-1]
         country = rendered_page_loc[1].text
 
     except Exception: 
