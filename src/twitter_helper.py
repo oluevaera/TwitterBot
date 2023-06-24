@@ -13,7 +13,7 @@ client = tweepy.Client(
 
 
 def read_latest_tweet_date(company):
-    with open('data.json') as file:
+    with open('src/data.json') as file:
         json_data = json.load(file)
 
     if company == 'Google':
@@ -30,7 +30,7 @@ def read_latest_tweet_date(company):
 
 
 def write_latest_tweet_date(company, data):
-    with open('data.json') as file:
+    with open('src/data.json') as file:
         existing_data = json.load(file)
 
     if company == 'Google':
@@ -43,7 +43,7 @@ def write_latest_tweet_date(company, data):
         while len(existing_data[company]) > 20:
             existing_data[company].pop(0)
 
-    with open('data.json', 'w') as file:
+    with open('src/data.json', 'w') as file:
         json.dump(existing_data, file)
 
 
