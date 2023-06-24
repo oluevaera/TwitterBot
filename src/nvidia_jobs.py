@@ -38,7 +38,7 @@ def get_nvidia_job_details():
 # Filter the open positions based on the post date.
 def filtered_positions(open_positions, todays_tags):
     filter_by_time = [position for position in open_positions if
-                      position[-1] == "Today" or position[-1] == '10']
+                      position[-1] == "Today" or position[-1] == "Yesterday"]
 
     # Filter the open positions based on the tag.
     filter_by_tag = [position for position in filter_by_time if
