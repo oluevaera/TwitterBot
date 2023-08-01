@@ -28,7 +28,7 @@ def get_google_job_cards():
         title = page.html.xpath(f'//li[@class="lLd3Je"][{i}]/div//h3')[0].text
         job_link = 'https://www.google.com/about/careers/applications/jobs/results/' + job
         job_id = job
-        experience = page.html.xpath(f'//li[@class="lLd3Je"][{i}]//span[@class="wVSTAb"]')[0].text
+        experience = page.html.xpath(f'//li[@class="lLd3Je"][{i}]//span[@class="wVSTAb"]')[0].text + ' level'
         to_be_posted.append([title, job_link, job_id, experience])
 
     return to_be_posted
