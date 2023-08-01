@@ -56,11 +56,10 @@ def main():
 
     city = 'Zürich'
     country = 'Switzerland'
-    remote = 'Not eligible for remote working.'
 
     for position in reversed(to_post):
         tweet = th.tweet_text(position[0], position[1], city, country,
-                              remote, 'Nvidia', '#' + position[-2]
+                              'Nvidia', '#' + position[-2]
                               )
         th.create_tweet(tweet)
 

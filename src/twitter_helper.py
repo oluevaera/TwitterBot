@@ -18,8 +18,8 @@ def read_latest_tweet_date(company):
         json_data = json.load(file)
 
     if company == 'Google':
-        google_latest = json_data[company]['date']
-        return google_latest
+        google_posted_ids = [dic['id'] for dic in json_data[company]]
+        return google_posted_ids
     elif company == 'Nvidia':
         date_today = date.today()
         date_yesterday = date_today - timedelta(days=1)
@@ -34,15 +34,12 @@ def write_latest_tweet_date(company, data):
     with open('src/data.json') as file:
         existing_data = json.load(file)
 
-    if company == 'Google':
-        existing_data[company]['date'] = data
-    elif company == 'Nvidia':
-        for posting in data:
-            existing_data[company].append(
-                {"day": str(date.today()), "id": posting[-2]}
-                )
-        while len(existing_data[company]) > 20:
-            existing_data[company].pop(0)
+    for posting in data:
+        existing_data[company].append(
+            {"day": str(date.today()), "id": posting[-2]}
+            )
+    while len(existing_data[company]) > 20:
+        existing_data[company].pop(0)
 
     with open('src/data.json', 'w') as file:
         json.dump(existing_data, file)
@@ -50,15 +47,14 @@ def write_latest_tweet_date(company, data):
 
 # Function that uses all the data collected from the job postings and returns
 # the final tweet text.
-def tweet_text(job_title, url, city, country, remote, company, hashtag=''):
+def tweet_text(job_title, url, city, country, company, hashtag='', level=None):
 
     msg = (
     f'New position for:\n'
     f'{job_title}\n'
+    f'{level}\n'
     f'\n'
     f'Main office: {city}, {country}\n'
-    f'\n'
-    f'{remote}\n'
     f'\n'
     f'Read more: {url}\n'
     f'#{company} {hashtag}'
