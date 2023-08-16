@@ -23,7 +23,7 @@ def get_google_job_cards():
     to_be_posted = list()
     for i, job in enumerate(active_jobs_tags, 1):
         if job in posted_job_tags:
-            break
+            continue
         
         title = page.html.xpath(f'//li[@class="lLd3Je"][{i}]/div//h3')[0].text
         job_link = 'https://www.google.com/about/careers/applications/jobs/results/' + job
