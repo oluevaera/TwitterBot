@@ -1,4 +1,2 @@
-pyshorteners==1.0.1
-twitter==1.19.3
 requests_html==0.10.0
 tweepy==4.12

@@ -47,7 +47,7 @@ def write_latest_tweet_date(company, data):
 
 # Function that uses all the data collected from the job postings and returns
 # the final tweet text.
-def tweet_text(job_title, url, city, country, company, hashtag='', level=None):
+def tweet_text(job_title, url, city, country, company, hashtag='', level=''):
 
     msg = (
     f'New position for:\n'

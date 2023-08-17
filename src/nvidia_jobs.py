@@ -1,7 +1,6 @@
 import re
 from requests_html import HTMLSession
-import pyshorteners
-import twitter_helper as th
+import twitter_helper2 as th
 
 
 # Collect the data from the nvidia careers website.
@@ -9,9 +8,9 @@ def get_nvidia_job_details():
     # Render the careers page.
     session = HTMLSession()
     url = (
-        'https://nvidia.wd5.myworkdayjobs.com/NVIDIAExternalCareerSite'
-        '?locations=91336993fab910af6d6f80c09504c167'
-        '&jobFamilyGroup=0c40f6bd1d8f10ae43ffaefd46dc7e78'
+        'https://nvidia.wd5.myworkdayjobs.com/NVIDIAExternalCareerSite?'
+        'jobFamilyGroup=0c40f6bd1d8f10ae43ffaefd46dc7e78'
+        '&locationHierarchy1=2fcb99c455831013ea52e9ef1a0032ba'
         )
     page = session.get(url)
     page.html.render(sleep=5, keep_page=True, scrolldown=1)
@@ -21,7 +20,6 @@ def get_nvidia_job_details():
     card_ids = page.html.xpath('//li[@class="css-h2nt8k"]')
     card_dates = page.html.xpath('//dd[@class="css-129m7dg"]') 
     open_positions = list()
-    type_tiny = pyshorteners.Shortener()
 
     # Populate a list with all the collected job data.
     for title, ids, dates in zip(card_titles, card_ids,card_dates[1::2]):
@@ -29,8 +27,7 @@ def get_nvidia_job_details():
         job_link = "https://nvidia.wd5.myworkdayjobs.com" + title.attrs["href"]
         job_id = ids.text
         job_date = re.sub(r'\W+', '', dates.text.split()[1]) # remove the '+'.
-        short_url = type_tiny.tinyurl.short(job_link)
-        open_positions.append([job_title, short_url, job_id, job_date])
+        open_positions.append([job_title, job_link, job_id, job_date])
 
     return open_positions
 
