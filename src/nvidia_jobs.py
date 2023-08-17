@@ -1,6 +1,6 @@
 import re
 from requests_html import HTMLSession
-import twitter_helper2 as th
+import twitter_helper as th
 
 
 # Collect the data from the nvidia careers website.
