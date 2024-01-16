@@ -35,7 +35,7 @@ def get_google_job_cards():
         job_title = title.text
         job_link = url
         job_id = id
-        open_positions.append([job_title, job_link, job_id])
+        open_positions.append([job_title, job_link, job_id, ""])
 
     driver.quit()
     return open_positions
