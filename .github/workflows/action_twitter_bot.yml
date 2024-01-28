@@ -18,7 +18,7 @@ jobs:
       - name: Install requirements
         run: pip3 install -r requirements.txt
 
-      - name: Run Google Bot
+      - name: Run Scraper
         env:
           BEARER_TOKEN: ${{ secrets.BEARER_TOKEN }}
           CONSUMER_KEY: ${{ secrets.CONSUMER_KEY }}
