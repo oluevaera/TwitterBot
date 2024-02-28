@@ -16,5 +16,4 @@ Each of the company scripts are scrapping the career website of their respective
 
 * The scripts are running every 3 hours to check if there are new positions posted.
 * The tweets have #hashtags in order for the users and the developer to have access to the positions by company.
-* The data are collected with the "requests_html" Python library.
-* The links are shortened with "pyshorteners" for better readability on the tweet.
+* The data are collected with the "Selenium" Python library.
