@@ -36,7 +36,7 @@ def write_latest_tweet_date(company, data):
 
     for posting in data:
         existing_data[company].append({"day": str(date.today()), "id": posting["id"]})
-    while len(existing_data[company]) > 20:
+    while len(existing_data[company]) > 50:
         existing_data[company].pop(0)
 
     with open("src/data.json", "w") as file:
